@@ -53,6 +53,7 @@ public class MarqueeView<T> extends ViewFlipper {
     private int position;
     private List<T> messages = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
+    private AnimationListener animationListener;
 
     public MarqueeView(Context context) {
         this(context, null);
@@ -244,6 +245,9 @@ public class MarqueeView<T> extends ViewFlipper {
                         animation.cancel();
                     }
                     isAnimStart = true;
+                    if (animationListener != null) {
+                        animationListener.onAnimationStart(position);
+                    }
                 }
 
                 @Override
@@ -257,6 +261,9 @@ public class MarqueeView<T> extends ViewFlipper {
                         addView(view);
                     }
                     isAnimStart = false;
+                    if (animationListener != null) {
+                        animationListener.onAnimationEnd(position);
+                    }
                 }
 
                 @Override
@@ -320,6 +327,10 @@ public class MarqueeView<T> extends ViewFlipper {
 
     public interface OnItemClickListener {
         void onItemClick(int position, TextView textView);
+    }
+
+    public void setAnimationListener(AnimationListener animationListener) {
+        this.animationListener = animationListener;
     }
 
     /**
